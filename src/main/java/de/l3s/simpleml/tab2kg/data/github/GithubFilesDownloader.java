@@ -271,8 +271,11 @@ public class GithubFilesDownloader {
 			System.out.println(fileName);
 
 			try {
-				int repositoryId = new JSONObject(FileUtils.readFileToString(descriptionFile, "UTF-8"))
-						.getJSONObject("repository").getInt("id");
+                JSONObject description = new JSONObject(FileUtils.readFileToString(descriptionFile, "UTF-8"));
+                if (!description.has("repository"))
+                    continue;
+
+                int repositoryId = description.getJSONObject("repository").getInt("id");
 
 				if (!repositoryCounts.containsKey(repositoryId))
 					repositoryCounts.put(repositoryId, 1);
